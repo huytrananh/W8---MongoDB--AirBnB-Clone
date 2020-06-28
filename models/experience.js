@@ -9,22 +9,45 @@ const schema = new mongoose.Schema({
         maxlength: 100,
         required: [true, "Must have a title"]
     },
+    duration: {
+        type: String,
+        required: true
+    },
+    groupSize: {
+        type: String,
+        required: true
+    },
+    // images: {
+
+    // },
     description: {
         type: String,
         trim: true,
         minlength: 5,
         maxlength: 1000
     },
-    host: {
-        type: mongoose.Schema.ObjectId, // ??
-        ref: "User", // ??
-        required: [true, "Experience must have a host"]
+    items: [{
+        type: String,
+        required: true
+    }],
+    price: {
+        type: String,
+        required: true
     },
+    country: [{
+        type: String,
+        required: true
+    }],
     tags: [{
         type: mongoose.Schema.ObjectId,
         ref: "Tag",
         required: true
-    }]
+    }],
+    host: {
+        type: mongoose.Schema.ObjectId, // ??
+        ref: "User", // ??
+        required: [true, "Experience must have a host"]
+    }
 },{
     timestamps: true,
     toJSON: {virtuals: true },
@@ -57,5 +80,13 @@ const schema = new mongoose.Schema({
 
 //     next()
 // })
+
+
+schema.pre(/^find/, function (next){
+    this
+    .populate("host", "-createdAt -updatedAt -type -email")
+    .populate("tags")
+    next();
+})
 
 module.exports = mongoose.model("Exp", schema)

@@ -5,7 +5,7 @@ const User = require('../models/user');
 const { loginRequired } = require('../middleware/auth');
 
 /* GET users listing. */
-router.route("/").get(loginRequired, async function(req, res, next) {
+router.route("/").get(async function(req, res, next) {
   const user = await User.find({})
   // const user = await User.find({}, {name: 1, email: 1, password: 1})
   res.status(201).json({
@@ -14,7 +14,7 @@ router.route("/").get(loginRequired, async function(req, res, next) {
   })
 })
 
-router.route("/").post(loginRequired, createUser)
+router.route("/").post(createUser)
 
 router.route("/me").get(loginRequired, getMyProfile)
 

@@ -2,6 +2,8 @@ const Exp = require ("../models/experience")
 const Tag = require("../models/tag")
 const Review = require("../models/review")
 const User = require("../models/user")
+// const {deleteOne, updateOne} = require("./handlerFactor")
+
 
 exports.getExperiences = async (req, res, next) => {
     try{
@@ -108,7 +110,7 @@ exports.getSingleExp = async (req, res, next) => {
     //     res.json({ status: "fail", error: err })
     // }
     try {
-        const exps = await Exp.findById(req.params.id)
+        const exps = await Exp.findById(req.params.expId)
         res.json({ status: "success", data: exps })
     } catch (err) {
         res.json({ status: "fail", error: err })
@@ -138,7 +140,7 @@ exports.updateExperience = async (req, res, next) => {
 
 exports.deleteExperience = async (req, res, next) => {
     try{
-        await Exp.findByIdAndDelete(req.params.expId)
+        await Exp.findOneAndDelete({_id:req.params.expId, host: req.user._id})
         res.status(204).json({
             status: "success",
             data: null
@@ -147,3 +149,8 @@ exports.deleteExperience = async (req, res, next) => {
         res.json({status: "fail", message: "Cannot delete Experience"})
     }
 }
+
+
+// WAY 2:
+// exports.deleteExperience = deleteOne(Exp)
+// exports.updateExperience = updateOne(Exp)

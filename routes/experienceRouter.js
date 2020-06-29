@@ -8,17 +8,14 @@ router.route('/')
 .post(loginRequired, hostRequired, createExperience)
 
 router.route('/:expId')
-.put(loginRequired, hostRequired, updateExperience)
+.patch(loginRequired, hostRequired, updateExperience)
 .delete(loginRequired, hostRequired, deleteExperience)
-
+.get(getSingleExp)
 
 
 router.route('/reviews')
 .get(getReviews)
 .post(loginRequired, createReview)
-
-router.route('/:id')
-.get(getSingleExp)
 
 module.exports = router
 

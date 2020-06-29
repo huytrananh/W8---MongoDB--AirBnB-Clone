@@ -17,9 +17,11 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // images: {
-
-    // },
+    images: {
+        type: [{
+            type: String,
+        }]
+    },
     description: {
         type: String,
         trim: true,
@@ -34,10 +36,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    country: [{
-        type: String,
-        required: true
-    }],
+    country: {
+        city: String,
+        country: String
+    },
     tags: [{
         type: mongoose.Schema.ObjectId,
         ref: "Tag",
@@ -89,4 +91,5 @@ schema.pre(/^find/, function (next){
     next();
 })
 
+// schema.pre("save",)
 module.exports = mongoose.model("Exp", schema)

@@ -40,7 +40,7 @@ exports.createExperience = async(req, res, next) => {
             tags: newArr, 
             host: req.user._id
         })
-
+        
         res.status(201).json({
             status: "success",
             data: exp
@@ -48,52 +48,10 @@ exports.createExperience = async(req, res, next) => {
     }catch(err){
         res.status(400).json({
             status: "fail",
-            message: "Cannot create Experience"
+            message: err.message
         })
     }
 }
-
-exports.getReviews = async (req, res, next) => {
-    try{
-        const reviewList = await Review.find({})
-        res.status(201).json({
-            status: "success",
-            data: reviewList
-        })
-    }catch(err){
-        res.status(401).json({
-            status: "fail",
-            message: "Cannot get Reviews"
-        })
-    }
-}
-
-exports.createReview = async (req, res, next) => {
-    try{
-        const {rate, review} = req.body
-        const userId = req.user._id
-
-        if(!rate || !review){
-            return res.status(400).json({status: "fail",error: "Rate, review is required"})
-        }
-        const result = await Review.create({
-            rate: rate,
-            review: review,
-            userId: userId
-        })
-
-        res.status(201).json({
-            status: "success",
-            data: result
-        })
-    }catch(err){
-        res.status(401).json({
-            status: "fail",
-            message: "Cannot create Review"
-        })
-    }
-}
-
 
 exports.getSingleExp = async (req, res, next) => {
     // try{
@@ -149,18 +107,58 @@ exports.updateExperience = async (req, res, next) => {
     }
 }
 
-exports.deleteExperience = async (req, res, next) => {
+exports.deleteExperience = async (req, res, next) => { // wronggggggggggggggggggg
     try{
-        await Exp.findOneAndDelete({_id:req.params.expId, host: req.user._id})
-        res.status(204).json({
+        let exp = await Exp.findByIdAndDelete({_id:req.params.expId, host: req.user._id})
+        res.status(200).json({
             status: "success",
-            data: null
+            data: exp
           })
     }catch(err){
         res.json({status: "fail", message: "Cannot delete Experience"})
     }
 }
 
+exports.getReviews = async (req, res, next) => {
+    try{
+        const reviewList = await Review.find({})
+        res.status(201).json({
+            status: "success",
+            data: reviewList
+        })
+    }catch(err){
+        res.status(401).json({
+            status: "fail",
+            message: "Cannot get Reviews"
+        })
+    }
+}
+
+exports.createReview = async (req, res, next) => {
+    try{
+        const {rate, review} = req.body
+        const userId = req.user._id
+
+        if(!rate || !review){
+            return res.status(400).json({status: "fail",error: "Rate, review is required"})
+        }
+        const result = await Review.create({
+            rate: rate,
+            review: review,
+            userId: userId
+        })
+
+        res.status(201).json({
+            status: "success",
+            data: result
+        })
+    }catch(err){
+        res.status(401).json({
+            status: "fail",
+            message: "Cannot create Review"
+        })
+    }
+}
 
 // WAY 2:
 // exports.deleteExperience = deleteOne(Exp)

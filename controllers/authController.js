@@ -22,7 +22,7 @@ exports.loginWithEmail = async(req, res, next) => {
 
        res.json({
            status: "success",
-           data: {user: user, token: `Bearer ${token}`}
+           data: {user: user, token: token}
        })
     }catch(err){
         res.status(400).json({

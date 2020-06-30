@@ -94,6 +94,7 @@ exports.createReview = async (req, res, next) => {
     }
 }
 
+
 exports.getSingleExp = async (req, res, next) => {
     // try{
     //     const id = req.params.id
@@ -119,15 +120,25 @@ exports.getSingleExp = async (req, res, next) => {
 
 exports.updateExperience = async (req, res, next) => {
     try{
-        const exp = await Exp.findById(req.params.expId)
+        let exp = await Exp.findOne({_id:req.params.expId, host: req.user._id})
+        
         if(!exp){
             throw new Error("There is no experience")
         }
 
         const fields = Object.keys(req.body)
-        fields.map(field => exp[field] = req.body[field])
+        fields.forEach(async element => {
+            if(element === "tags"){
+                const newArr = await Tag.convertToObject(req.body["tags"])
+                exp[element] = newArr
+            }else{
+                exp[element] = req.body[element]
+            }
+        })
 
-        exp.save()
+        // fields.map(field => exp[field] = req.body[field])
+
+        await exp.save()
 
         res.json({
             status: "success",

@@ -2,7 +2,7 @@ const Exp = require ("../models/experience")
 const Tag = require("../models/tag")
 const Review = require("../models/review")
 const User = require("../models/user")
-// const {deleteOne, updateOne} = require("./handlerFactor")
+const {deleteOne, updateOne} = require("./handlerFactory")
 
 
 exports.getExperiences = async (req, res, next) => {
@@ -72,52 +72,52 @@ exports.getSingleExp = async (req, res, next) => {
         const exps = await Exp.findById(req.params.expId)
         res.json({ status: "success", data: exps })
     } catch (err) {
-        res.json({ status: "fail", error: err })
+        res.json({ status: "fail", message: err.message })
     }
 }
 
-exports.updateExperience = async (req, res, next) => {
-    try{
-        let exp = await Exp.findOne({_id:req.params.expId, host: req.user._id})
+// exports.updateExperience = async (req, res, next) => {
+//     try{
+//         let exp = await Exp.findOne({_id:req.params.expId, host: req.user._id})
         
-        if(!exp){
-            throw new Error("There is no experience")
-        }
+//         if(!exp){
+//             throw new Error("There is no experience")
+//         }
 
-        const fields = Object.keys(req.body)
-        fields.forEach(async element => {
-            if(element === "tags"){
-                const newArr = await Tag.convertToObject(req.body["tags"])
-                exp[element] = newArr
-            }else{
-                exp[element] = req.body[element]
-            }
-        })
+//         const fields = Object.keys(req.body)
+//         fields.forEach(async element => {
+//             if(element === "tags"){
+//                 const newArr = await Tag.convertToObject(req.body["tags"])
+//                 exp[element] = newArr
+//             }else{
+//                 exp[element] = req.body[element]
+//             }
+//         })
 
-        // fields.map(field => exp[field] = req.body[field])
+//         // fields.map(field => exp[field] = req.body[field])
 
-        await exp.save()
+//         await exp.save()
 
-        res.json({
-            status: "success",
-            data: exp
-        })
-    }catch(err){
-        res.json({status: "fail", message: "Cannot update Experience"})
-    }
-}
+//         res.json({
+//             status: "success",
+//             data: exp
+//         })
+//     }catch(err){
+//         res.json({status: "fail", message: "Cannot update Experience"})
+//     }
+// }
 
-exports.deleteExperience = async (req, res, next) => { // wronggggggggggggggggggg
-    try{
-        let exp = await Exp.findByIdAndDelete({_id:req.params.expId, host: req.user._id})
-        res.status(200).json({
-            status: "success",
-            data: exp
-          })
-    }catch(err){
-        res.json({status: "fail", message: "Cannot delete Experience"})
-    }
-}
+// exports.deleteExperience = async (req, res, next) => { // wronggggggggggggggggggg
+//     try{
+//         let exp = await Exp.findByIdAndDelete({_id:req.params.expId, host: req.user._id})
+//         res.status(200).json({
+//             status: "success",
+//             data: exp
+//           })
+//     }catch(err){
+//         res.json({status: "fail", message: "Cannot delete Experience"})
+//     }
+// }
 
 exports.getReviews = async (req, res, next) => {
     try{
@@ -161,5 +161,5 @@ exports.createReview = async (req, res, next) => {
 }
 
 // WAY 2:
-// exports.deleteExperience = deleteOne(Exp)
-// exports.updateExperience = updateOne(Exp)
+exports.deleteExperience = deleteOne(Exp) // pass the name of model you want to delete
+exports.updateExperience = updateOne(Exp)

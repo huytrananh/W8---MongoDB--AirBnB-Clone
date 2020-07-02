@@ -3,6 +3,7 @@ const validator = require("validator")
 const bcrypt = require("bcrypt")
 const round = 10 // ??
 const jwt = require("jsonwebtoken")
+const { schema } = require("./experience")
 
 
 const userSchema = new mongoose.Schema({
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: [true, "Password is required"],
+        // require: [true, "Password is required"],
     },
     tokens: [String],
     type: {
@@ -92,6 +93,16 @@ userSchema.pre("save", async function(next){ // pre: middle ware
     next()
 })
 
+schema.statics.findOneOrCreate = async function({email, name}){
+    // `this` refers to User model
+    let user = await this.findOne({email})
+    if(!user){
+        user = await this.create({
+            email: email,
+            name: name
+        })
+    }
+}
 const User = mongoose.model("User", userSchema)
 
 module.exports = User

@@ -6,8 +6,10 @@
 
 var app = require('../app');
 var debug = require('debug')('w8---mongodb--authentication-relationship:server');
+// var https = require('https');
 var http = require('http');
-
+const fs = require('fs');
+const path = require('path');
 /**
  * Get port from environment and store in Express.
  */
@@ -18,8 +20,14 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
+var server = http.createServer(app)
+// const server = https.createServer(
+//   {
+//     key: fs.readFileSync(path.join(__dirname, "server.key")),
+//     cert: fs.readFileSync(path.join(__dirname, "server.cert"))
+//   },
+//   app
+// );
 
 /**
  * Listen on provided port, on all network interfaces.

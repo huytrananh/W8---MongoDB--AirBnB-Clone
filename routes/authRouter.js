@@ -1,5 +1,5 @@
 var express = require('express');
-const { loginWithEmail } = require('../controllers/authController');
+const { loginWithEmail, loginFacebook, facebookAuthHandler} = require('../controllers/authController');
 // const { loginRequired } = require('../middleware/auth')
 var router = express.Router();
 
@@ -21,5 +21,7 @@ router.route("/login").post(loginWithEmail)
 // }
 
 // router.route("/logout").get(loginRequired, logout)
+router.route("/facebook/login").get(loginFacebook)
+router.route("/facebook/authorized").get(facebookAuthHandler)
 
 module.exports = router;

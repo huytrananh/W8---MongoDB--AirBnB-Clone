@@ -12,7 +12,6 @@ router.route('/:expId')
 .delete(loginRequired, hostRequired, deleteExperience)
 .get(getSingleExp)
 
-
 router.route('/reviews')
 .get(getReviews)
 .post(loginRequired, createReview)

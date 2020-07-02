@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var mongoose = require("mongoose")
-
+const passport = require("./oauth/index")
 
 var indexRouter = require('./routes/indexRouter')
 var usersRouter = require('./routes/userRouter')
@@ -42,7 +42,7 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
 app.use("/experiences", expRouter)
-// app.use('/singleExperience', singleExp)
+// app.use(passport.initialize())
 
 
 
@@ -53,13 +53,13 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+  if (process.env.NODE_DEV != "development") {
+      res.status(err.statusCode).json({ status: err.status, message: err.message });
+  } else {
+      res.status(err.statusCode).json({ status: err.status, message: err.message, stack: err.stack });
+  }
 });
 
 module.exports = app;

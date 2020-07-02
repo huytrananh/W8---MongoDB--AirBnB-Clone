@@ -18,6 +18,20 @@ exports.createUser = async (req, res, next) => {
     }
 }
 
+exports.getUsersList = async(req, res) => {
+    try{
+        const user = await User.find()
+        // WAY 2: const user = await User.find({}, {name: 1, email: 1, password: 1})
+        res.status(201).json({
+            status: "success",
+            data: user
+        })
+    }catch(err){
+        res.json({status: "fail", message: err.message})
+    }
+}
+
 exports.getMyProfile = (req, res, next) => {
     res.json({status: "success",data: req.user})
 }
+

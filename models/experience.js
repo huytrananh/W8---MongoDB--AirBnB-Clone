@@ -10,11 +10,11 @@ const schema = new mongoose.Schema({
         required: [true, "Must have a title"]
     },
     duration: {
-        type: String,
+        type: Number,
         required: true
     },
     groupSize: {
-        type: String,
+        type: Number,
         required: true
     },
     images: {
@@ -33,12 +33,12 @@ const schema = new mongoose.Schema({
         required: true
     }],
     price: {
-        type: String,
+        type: Number,
         required: true
     },
     country: {
-        city: String,
-        country: String
+        type: String,
+        required: true
     },
     tags: [{
         type: mongoose.Schema.ObjectId,

@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var mongoose = require("mongoose")
-const passport = require("./oauth/index")
+const cors = require("cors")
+// const passport = require("./oauth/index")
 
 var indexRouter = require('./routes/indexRouter')
 var usersRouter = require('./routes/userRouter')
@@ -37,7 +38,7 @@ mongoose.connect(process.env.DB, {
     console.log("PORT: ", process.env.PORT)
   }
 )
-
+app.use(cors())
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)

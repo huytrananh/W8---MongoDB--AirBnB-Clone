@@ -7,7 +7,8 @@ const {deleteOne, updateOne} = require("./handlerFactory")
 
 exports.getExperiences = async (req, res, next) => {
     try{
-        const exps = await Exp.find({host: req.user._id}).populate("host").populate("tags")
+        // const exps = await Exp.find({host: req.user._id}).populate("host").populate("tags")
+        const exps = await Exp.find().populate("host").populate("tags")
         res.status(201).json({status: "success", data: exps})
     }catch(err){
         res.status(400).json({status: "fail", message: err.message})

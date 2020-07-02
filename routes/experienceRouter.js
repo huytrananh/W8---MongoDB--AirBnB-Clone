@@ -4,7 +4,7 @@ const { loginRequired, hostRequired } = require("../middleware/auth")
 
 
 router.route('/')
-.get(loginRequired, getExperiences)
+.get( getExperiences)
 .post(loginRequired, hostRequired, createExperience)
 
 router.route('/:expId')
